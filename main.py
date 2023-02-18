@@ -13,6 +13,7 @@ def is_valid_num(num):
         num = is_valid_num(num)
         return num
 
+
 # Функция проверки ответа пользователя о составе пароля
 def is_valid_answer(ans, char):
     if ans == 'y' or ans == 'n':
@@ -27,7 +28,6 @@ def is_valid_answer(ans, char):
             return True
         else:
             return False
-
 
 
 # Функция определяющая количество паролей и их состав
@@ -45,6 +45,12 @@ def what_in_pass(quant):
             answer = input().lower()
             if is_valid_answer(answer, symbols[k]):
                 chars += symbols[k]
+        print("Должен ли пароль содержать неоднозначные символы:", constants.ambiguous_char, "Y/N?")
+        answer = input().lower()
+        if not is_valid_answer(answer, constants.ambiguous_char):
+            for j in constants.ambiguous_char:
+                if j in chars:
+                    chars = chars.replace(j, "")
         passwords.append(generate_password(chars, length))
     return passwords
 
@@ -52,9 +58,7 @@ def what_in_pass(quant):
 # Функция генерации пароля
 def generate_password(pass_chars, pass_length):
     password = ""
-    l_chars = pass_chars.split()
-    print(len(pass_chars))
-    print(l_chars)
+    l_chars = list(pass_chars)
     for i in range(pass_length):
         password += l_chars[random.randint(0, len(pass_chars) - 1)]
     return password
@@ -65,6 +69,4 @@ print("Добро пожаловать в генератор безопасны�
 print("Укажите количество паролей, которые необходимо сгенерировать.")
 quantity = input()
 quantity = is_valid_num(quantity)
-print(what_in_pass(quantity))
-
-
+print("Ваши сгенерированные пароли:", *what_in_pass(quantity), sep="\n")
